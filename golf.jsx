@@ -1,29 +1,32 @@
+
 import React, { Component } from 'react';
 import './App.css';
 
 class App extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       renderBall: false,
       pos: 0
     };
   }
 
+  // Show the ball when button is clicked
   buttonClickHandler = () => {
     this.setState({
       renderBall: true
     });
-  }
+  };
 
+  // Move the ball when Right Arrow is pressed
   handleKeyDown = (event) => {
-    // Check for Right Arrow key (keyCode 39 or key 'ArrowRight')
-    if (event.key === 'ArrowRight' || event.keyCode === 39) {
+    if (event.key === 'ArrowRight') {
       this.setState((prevState) => ({
         pos: prevState.pos + 5
       }));
     }
-  }
+  };
 
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyDown);
@@ -33,32 +36,28 @@ class App extends Component {
     document.removeEventListener('keydown', this.handleKeyDown);
   }
 
-  renderChoice = () => {
-    if (this.state.renderBall) {
-      return (
-        <div 
-          className="ball" 
-          style={{ 
-            left: `${this.state.pos}px`, 
-            position: 'absolute' 
-          }}
-        ></div>
-      );
-    } else {
-      return (
-        <button className="start" onClick={this.buttonClickHandler}>
-          Click For Ball
-        </button>
-      );
-    }
-  }
-
   render() {
     return (
       <div className="playground">
-        {this.renderChoice()}
+        {!this.state.renderBall ? (
+          <button
+            className="start"
+            onClick={this.buttonClickHandler}
+          >
+            Click For Ball
+          </button>
+        ) : (
+          <div
+            className="ball"
+            style={{
+              position: 'absolute',
+              left: `${this.state.pos}px`
+            }}
+          ></div>
+        )}
       </div>
     );
   }
 }
+
 export default App;
